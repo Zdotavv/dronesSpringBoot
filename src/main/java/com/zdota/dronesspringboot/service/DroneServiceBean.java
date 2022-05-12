@@ -5,6 +5,7 @@ import com.zdota.dronesspringboot.repository.DroneRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -12,28 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 @AllArgsConstructor
-public class DroneServiceBean implements DroneService{
+public class DroneServiceBean implements DroneService {
 
-        private final DroneRepository droneRepository;
-        @Override
-        public Drone create (Drone drone){
-        checkDateForUpgrade(drone);
+    private final DroneRepository droneRepository;
+
+    @Override
+    public Drone create(Drone drone) {
         return droneRepository.save(drone);
     }
 
-        @Override
-        public List<Drone> viewAll () {
+    @Override
+    public List<Drone> viewAll() {
         return droneRepository.findAll();
     }
 
-        @Override
-        public Drone viewById (Integer id){
+    @Override
+    public Drone viewById(Integer id) {
         return droneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity Not Found with id: " + id));
     }
 
-        @Override
-        public Drone updateById (Integer id, Drone drone){
-        checkDateForUpgrade(drone);
+    @Override
+    public Drone updateById(Integer id, Drone drone) {
         return droneRepository.findById(id)
                 .map(entity -> {
                     entity.setName(drone.getName());
@@ -50,22 +50,21 @@ public class DroneServiceBean implements DroneService{
                 .orElseThrow(() -> new EntityNotFoundException("Bomb not found with id = " + id));
     }
 
-        @Override
-        public void removeById (Integer id){
+    @Override
+    public void removeById(Integer id) {
         droneRepository.deleteById(id);
     }
 
-        @Override
-        public void removeAll () {
+    @Override
+    public void removeAll() {
         droneRepository.deleteAll();
     }
-
 
     @Override
     public boolean isFighter(Integer id) {
         return droneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity Not Found with id: " + id)).isFighter();
 
-        }
+    }
 
     @Override
     public List<Drone> viewAllFighter() {
@@ -78,6 +77,7 @@ public class DroneServiceBean implements DroneService{
         }
         return drones;
     }
+
     @Override
     public List<Drone> viewAllNotFighter() {
         List<Drone> allDrones = droneRepository.findAll();
@@ -90,16 +90,17 @@ public class DroneServiceBean implements DroneService{
         return drones;
     }
 
-    /**
-     * technical method that checks need drone in upgrade
-     *
-     * @param drone - drone to check
-     */
-    private void checkDateForUpgrade(Drone drone) {
-        if (drone.getDate().isBefore(LocalDate.of(2020, 1, 1))) {
-            System.out.println("Drone need to upgrade");
-            throw new RuntimeException("Drone need to upgrade");
+    @Override
+    public List<Drone> viewAllNeedUpgrade() {
+        List<Drone> allDrones = droneRepository.findAll();
+        List<Drone> drones = new ArrayList<>();
+        for (Drone drone : allDrones) {
+            if (drone.getDate().isBefore(LocalDate.of(2020, 1, 1))) {
+                drones.add(drone);
+            }
         }
+        return drones;
+    }
 
     }
-}
+

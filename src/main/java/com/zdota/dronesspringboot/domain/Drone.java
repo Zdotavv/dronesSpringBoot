@@ -14,10 +14,10 @@ public class Drone {
     private Integer id;
     private String name;
     private String country;
-    private int weight;
-    private int maxLoadCapacity;
+    private double weight;
+    private double maxLoadCapacity;
     private int maxFlightTime;
-    private int maxHeight;
+    private double maxHeight;
 
     private int maxSpeed;
     private boolean isFighter;
@@ -48,19 +48,19 @@ public class Drone {
         this.country = country;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
-    public int getMaxLoadCapacity() {
+    public double getMaxLoadCapacity() {
         return maxLoadCapacity;
     }
 
-    public void setMaxLoadCapacity(int maxLoadCapacity) {
+    public void setMaxLoadCapacity(double maxLoadCapacity) {
         this.maxLoadCapacity = maxLoadCapacity;
     }
 
@@ -72,11 +72,11 @@ public class Drone {
         this.maxFlightTime = maxFlightTime;
     }
 
-    public int getMaxHeight() {
+    public double getMaxHeight() {
         return maxHeight;
     }
 
-    public void setMaxHeight(int maxHeight) {
+    public void setMaxHeight(double maxHeight) {
         this.maxHeight = maxHeight;
     }
 

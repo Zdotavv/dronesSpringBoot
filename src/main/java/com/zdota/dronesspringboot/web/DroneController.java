@@ -19,7 +19,6 @@ public class DroneController {
     @PostMapping("/drones")
     @ResponseStatus(HttpStatus.CREATED)
     public Drone createDrone(@RequestBody Drone drone){
-
         return droneService.create(drone);
     }
 
@@ -66,6 +65,12 @@ public class DroneController {
     @ResponseStatus(HttpStatus.OK)
     public List<Drone> getAllNotFighter() {
         return droneService.viewAllNotFighter();
+    }
+
+    @GetMapping("/drones/needUpgrade")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Drone> viewAllNeedUpgrade() {
+        return droneService.viewAllNeedUpgrade();
     }
 
 }

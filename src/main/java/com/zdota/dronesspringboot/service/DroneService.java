@@ -21,4 +21,5 @@ public interface DroneService {
 
     List<Drone> viewAllFighter();
     List<Drone> viewAllNotFighter();
+    List<Drone> viewAllNeedUpgrade();
 }
