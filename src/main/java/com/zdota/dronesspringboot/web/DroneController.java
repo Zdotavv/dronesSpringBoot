@@ -3,14 +3,17 @@ package com.zdota.dronesspringboot.web;
 import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.service.DroneService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
+@Slf4j
 public class DroneController {
 
     private final DroneService droneService;
@@ -25,7 +28,6 @@ public class DroneController {
     @GetMapping("/drones")
     @ResponseStatus(HttpStatus.OK)
     public List<Drone> viewAllDrones() {
-
         return droneService.viewAll();
     }
 
@@ -55,17 +57,28 @@ public class DroneController {
     public boolean droneIsFighter(@PathVariable Integer id) {
         return droneService.isFighter(id);
     }
-    @GetMapping("/drones/allFighter")
+    @GetMapping("/drones/fighters")
     @ResponseStatus(HttpStatus.OK)
-    public List<Drone> getAllFighter() {
-        return droneService.viewAllFighter();
+    public Collection<Drone> findDroneByFighter() {
+        return droneService.findDroneByFighter();
+    }
+    @GetMapping("/drones/noFighters")
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<Drone> findDroneByNoFighter() {
+        return droneService.findDroneByNoFighter();
     }
 
-    @GetMapping("/drones/notFighter")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Drone> getAllNotFighter() {
-        return droneService.viewAllNotFighter();
-    }
+//    @GetMapping("/drones/allFighter")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<Drone> getAllFighter() {
+//        return droneService.viewAllFighter();
+//    }
+
+//    @GetMapping("/drones/notFighter")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<Drone> getAllNotFighter() {
+//        return droneService.viewAllNotFighter();
+//    }
 
     @GetMapping("/drones/needUpgrade")
     @ResponseStatus(HttpStatus.OK)
@@ -73,4 +86,14 @@ public class DroneController {
         return droneService.viewAllNeedUpgrade();
     }
 
+    @GetMapping(value = "/drones", params = {"name"})
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<Drone> findDroneByName(String name) {
+            return droneService.findDroneByName(name);
+        }
+    @GetMapping(value = "/drones", params = {"flightDuration"})
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<Drone> findDroneByFlightDuration(int flightDuration) {
+        return droneService.findDroneByFlightDuration(flightDuration);
+    }
 }

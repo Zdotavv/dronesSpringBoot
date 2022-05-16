@@ -2,6 +2,7 @@ package com.zdota.dronesspringboot.service;
 
 import com.zdota.dronesspringboot.domain.Drone;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface DroneService {
@@ -19,7 +20,11 @@ public interface DroneService {
 
     boolean isFighter(Integer id);
 
-    List<Drone> viewAllFighter();
-    List<Drone> viewAllNotFighter();
+    Collection<Drone>findDroneByName(String name);
+    Collection<Drone>findDroneByFlightDuration(int flightDuration);
+    Collection<Drone>findDroneByFighter();
+    Collection<Drone>findDroneByNoFighter();
+//    List<Drone> viewAllFighter();
+//    List<Drone> viewAllNotFighter();
     List<Drone> viewAllNeedUpgrade();
 }

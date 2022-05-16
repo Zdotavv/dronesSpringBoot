@@ -11,18 +11,19 @@ public class Drone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name="id",nullable = false)
     private Integer id;
     private String name;
     private String country;
     private double weight;
     private double maxLoadCapacity;
-    private int maxFlightTime;
+    private int flightDuration;
     private double maxHeight;
 
     private int maxSpeed;
     private boolean isFighter;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    private LocalDate produceDate;
 
     public Integer getId() {
         return id;
@@ -64,12 +65,12 @@ public class Drone {
         this.maxLoadCapacity = maxLoadCapacity;
     }
 
-    public int getMaxFlightTime() {
-        return maxFlightTime;
+    public int getFlightDuration() {
+        return flightDuration;
     }
 
-    public void setMaxFlightTime(int maxFlightTime) {
-        this.maxFlightTime = maxFlightTime;
+    public void setFlightDuration(int flightDuration) {
+        this.flightDuration = flightDuration;
     }
 
     public double getMaxHeight() {
@@ -96,11 +97,11 @@ public class Drone {
         isFighter = fighter;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getProduceDate() {
+        return produceDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setProduceDate(LocalDate produceDate) {
+        this.produceDate = produceDate;
     }
 }
