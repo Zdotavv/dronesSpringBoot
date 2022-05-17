@@ -11,6 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -128,13 +129,26 @@ public class DroneServiceBean implements DroneService {
         List<Drone> allDrones = droneRepository.findAll();
         List<Drone> drones = new ArrayList<>();
         for (Drone drone : allDrones) {
-            if (drone.getProduceDate().isBefore(LocalDate.of(2020, 1, 1))) {
+            if (drone.getProduceDate().isBefore(LocalDateTime.of(2020, 1, 1,0,0))) {
                 drones.add(drone);
             }
         }
         return drones;
     }
 
-
+    @Override
+    public void updateDate(Integer id, LocalDateTime dateTime) {
+        log.info("updateDateTime() - start");
+        droneRepository.updateDrone(id, dateTime);
+        log.info("updateDateTime() - end");
     }
+
+    @Override
+    public Collection<Drone> findDroneByUsa() {
+        log.info("findDroneByUSA() - start");
+        Collection<Drone> collection = droneRepository.findByUsa();
+        log.info("findDroneByUSA() - end: collection = {}", collection);
+        return collection;
+    }
+}
 

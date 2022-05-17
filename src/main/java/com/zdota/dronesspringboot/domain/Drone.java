@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="drones")
@@ -22,8 +23,8 @@ public class Drone {
 
     private int maxSpeed;
     private boolean isFighter;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate produceDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime produceDate;
 
     public Integer getId() {
         return id;
@@ -97,11 +98,11 @@ public class Drone {
         isFighter = fighter;
     }
 
-    public LocalDate getProduceDate() {
+    public LocalDateTime getProduceDate() {
         return produceDate;
     }
 
-    public void setProduceDate(LocalDate produceDate) {
+    public void setProduceDate(LocalDateTime produceDate) {
         this.produceDate = produceDate;
     }
 }

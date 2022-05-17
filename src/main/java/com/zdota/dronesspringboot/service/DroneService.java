@@ -2,6 +2,8 @@ package com.zdota.dronesspringboot.service;
 
 import com.zdota.dronesspringboot.domain.Drone;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public interface DroneService {
     Collection<Drone>findDroneByFlightDuration(int flightDuration);
     Collection<Drone>findDroneByFighter();
     Collection<Drone>findDroneByNoFighter();
-//    List<Drone> viewAllFighter();
-//    List<Drone> viewAllNotFighter();
     List<Drone> viewAllNeedUpgrade();
+    void updateDate(Integer id, LocalDateTime dateTime);
+    Collection<Drone>findDroneByUsa();
 }

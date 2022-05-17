@@ -4,10 +4,15 @@ import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.service.DroneService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 @RestController
@@ -95,5 +100,18 @@ public class DroneController {
     @ResponseStatus(HttpStatus.OK)
     public Collection<Drone> findDroneByFlightDuration(int flightDuration) {
         return droneService.findDroneByFlightDuration(flightDuration);
+    }
+    @PatchMapping(value = "/drones/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateDate(@RequestParam("dateTime")
+                           @DateTimeFormat() String ldc,
+                           @PathVariable Integer id) {
+        LocalDateTime localDateTime= LocalDateTime.parse(ldc, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        droneService.updateDate(id, localDateTime);
+    }
+    @GetMapping(value = "/drones/usa")
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<Drone> findDroneByUsa() {
+        return droneService.findDroneByUsa();
     }
 }
