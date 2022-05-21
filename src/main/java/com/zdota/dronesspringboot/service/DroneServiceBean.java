@@ -6,15 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 @Service
 @AllArgsConstructor
@@ -28,14 +23,25 @@ public class DroneServiceBean implements DroneService {
         return droneRepository.save(drone);
     }
 
-    @Override
-    public List<Drone> viewAll() {
-        return droneRepository.findAll();
-    }
+//    @Override
+//    public List<Drone> viewAll() {
+//        return droneRepository.findAll();
+//    }
 
     @Override
     public Drone viewById(Integer id) {
-        return droneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity Not Found with id: " + id));
+        Drone drone = checkDrone(id);
+        checkDeleted(drone);
+        return checkDrone(id);
+    }
+           private void checkDeleted(Drone drone){
+            if (drone.getDeleted()==null || drone.getDeleted()) {
+                throw new EntityNotFoundException("Drone was deleted");
+            }
+    }
+
+    private Drone checkDrone(Integer id) {
+        return droneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Drone not found with id = " + id));
     }
 
     @Override
@@ -53,25 +59,29 @@ public class DroneServiceBean implements DroneService {
                     entity.setProduceDate(drone.getProduceDate());
                     return droneRepository.save(entity);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Bomb not found with id = " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Drone not found with id = " + id));
     }
 
     @Override
     public void removeById(Integer id) {
-        droneRepository.deleteById(id);
+        Drone drone =checkDrone(id);
+       drone.setDeleted(Boolean.TRUE);
+        droneRepository.save(drone);
     }
 
     @Override
     public void removeAll() {
         droneRepository.deleteAll();
     }
-   @Override
+
+    @Override
     public Collection<Drone> findDroneByName(String name) {
-       log.info("findDroneByName() - start: name = {}", name);
-        Collection<Drone> collection=droneRepository.findByName(name);
-       log.info("findDroneByName() - end: collection = {}", collection);
+        log.info("findDroneByName() - start: name = {}", name);
+        Collection<Drone> collection = droneRepository.findByName(name);
+        log.info("findDroneByName() - end: collection = {}", collection);
         return collection;
     }
+
     @Override
     public Collection<Drone> findDroneByFlightDuration(int flightDuration) {
         log.info("findDroneByFlightDuration() - start: flightDuration = {}", flightDuration);
@@ -79,20 +89,23 @@ public class DroneServiceBean implements DroneService {
         log.info("findDroneByFlightDuration() - end: collection = {}", collection);
         return collection;
     }
+
     @Override
-    public Collection<Drone>findDroneByFighter() {
+    public Collection<Drone> findDroneByFighter() {
         log.info("findDroneByFighter() - start");
         Collection<Drone> collection = droneRepository.findByFighter();
         log.info("findDroneByFighter() - end: collection = {}", collection);
         return collection;
     }
+
     @Override
-    public Collection<Drone>findDroneByNoFighter() {
+    public Collection<Drone> findDroneByNoFighter() {
         log.info("findDroneByNoFighter() - start");
         Collection<Drone> collection = droneRepository.findByNoFighter();
         log.info("findDroneByNoFighter() - end: collection = {}", collection);
         return collection;
     }
+
     @Override
     public boolean isFighter(Integer id) {
         return droneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity Not Found with id: " + id)).isFighter();
@@ -129,19 +142,19 @@ public class DroneServiceBean implements DroneService {
         List<Drone> allDrones = droneRepository.findAll();
         List<Drone> drones = new ArrayList<>();
         for (Drone drone : allDrones) {
-            if (drone.getProduceDate().isBefore(LocalDateTime.of(2020, 1, 1,0,0))) {
+            if (drone.getProduceDate().isBefore(LocalDateTime.of(2020, 1, 1, 0, 0))) {
                 drones.add(drone);
             }
         }
         return drones;
     }
 
-    @Override
-    public void updateDate(Integer id, LocalDateTime dateTime) {
-        log.info("updateDateTime() - start");
-        droneRepository.updateDrone(id, dateTime);
-        log.info("updateDateTime() - end");
-    }
+//    @Override
+//    public void updateDate(Integer id, LocalDateTime dateTime) {
+//        log.info("updateDateTime() - start");
+//        droneRepository.updateDrone(id, dateTime);
+//        log.info("updateDateTime() - end");
+//    }
 
     @Override
     public Collection<Drone> findDroneByUsa() {
@@ -150,5 +163,14 @@ public class DroneServiceBean implements DroneService {
         log.info("findDroneByUSA() - end: collection = {}", collection);
         return collection;
     }
+    @Override
+    public Collection<Drone> findAllByDeletedIsFalse() {
+        log.info("findAllByDeletedIsFalse() - start");
+        Collection<Drone> collection = droneRepository.findAllByDeletedIsFalse();
+        log.info("findAllByDeletedIsFalse() - end: collection = {}", collection);
+        return collection;
+
+    }
+
 }
 
