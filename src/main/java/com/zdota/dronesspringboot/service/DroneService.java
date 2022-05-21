@@ -29,7 +29,7 @@ public interface DroneService {
     Collection<Drone>findDroneByFighter();
     Collection<Drone>findDroneByNoFighter();
     List<Drone> viewAllNeedUpgrade();
-//    void updateDate(Integer id, LocalDateTime dateTime);
+    void updateDate(Integer id, LocalDateTime dateTime);
     Collection<Drone>findDroneByUsa();
     Collection<Drone>findAllByDeletedIsFalse();
 }

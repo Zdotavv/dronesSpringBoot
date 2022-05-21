@@ -149,12 +149,12 @@ public class DroneServiceBean implements DroneService {
         return drones;
     }
 
-//    @Override
-//    public void updateDate(Integer id, LocalDateTime dateTime) {
-//        log.info("updateDateTime() - start");
-//        droneRepository.updateDrone(id, dateTime);
-//        log.info("updateDateTime() - end");
-//    }
+    @Override
+    public void updateDate(Integer id, LocalDateTime dateTime) {
+        log.info("updateDateTime() - start");
+        droneRepository.updateDrone(id, dateTime);
+        log.info("updateDateTime() - end");
+    }
 
     @Override
     public Collection<Drone> findDroneByUsa() {

@@ -22,10 +22,10 @@ public interface DroneRepository extends JpaRepository<Drone,Integer> {
     List<Drone>findByNoFighter();
     @Query("select i from Drone i where i.isDeleted=false")
     List<Drone>findAllByDeletedIsFalse();
-//    @Modifying
-//    @Transactional
-//    @Query("update Drone p set p.produceDate =:dateTime where p.id =:id")
-//    void updateDrone(Integer id, LocalDateTime dateTime);
+    @Modifying
+    @Transactional
+    @Query("update Drone p set p.produceDate =:dateTime where p.id =:id")
+    void updateDrone(Integer id, LocalDateTime dateTime);
 
     @Query("select l from Drone l where l.country='USA'")
     List<Drone>findByUsa();

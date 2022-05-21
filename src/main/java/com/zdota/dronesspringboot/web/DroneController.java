@@ -58,12 +58,6 @@ public class DroneController {
         return droneService.updateById(id, drone);
     }
 
-    @DeleteMapping("/drones/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeDroneById(@PathVariable Integer id) {
-        droneService.removeById(id);
-    }
-
     @DeleteMapping("/drones")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeAllDrones() {
@@ -119,22 +113,21 @@ public class DroneController {
         return droneService.findDroneByFlightDuration(flightDuration);
     }
 
-//    @PatchMapping(value = "/drones/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void updateDate(@RequestParam("dateTime")
-//                           @DateTimeFormat() String ldc,
-//                           @PathVariable Integer id) {
-//        LocalDateTime localDateTime = LocalDateTime.parse(ldc, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-//        droneService.updateDate(id, localDateTime);
-//    }
-
+    @PatchMapping(value = "/drones/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateDate(@RequestParam("dateTime")
+                           @DateTimeFormat() String ldc,
+                           @PathVariable Integer id) {
+        LocalDateTime localDateTime = LocalDateTime.parse(ldc, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        droneService.updateDate(id, localDateTime);
+    }
     @GetMapping(value = "/drones/usa")
     @ResponseStatus(HttpStatus.OK)
     public Collection<Drone> findDroneByUsa() {
         return droneService.findDroneByUsa();
     }
 
-    @PatchMapping("/drones/{id}")
+    @PatchMapping("/drones/{id}/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeDrone(@PathVariable Integer id) {  // add message to client "Drone by ID deleted "
         droneService.removeById(id);
