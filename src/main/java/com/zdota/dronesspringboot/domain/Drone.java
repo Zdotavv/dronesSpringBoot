@@ -2,14 +2,22 @@ package com.zdota.dronesspringboot.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+
+
 @Entity
 @Table(name="drones")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
 public class Drone {
 
     @Id
@@ -134,7 +142,7 @@ public class Drone {
     }
 
     @Override
-    public String toString() {
+    public String   toString() {
         return "Drone{" +
                 "id=" + id +
                 ", name='" + name + '\'' +

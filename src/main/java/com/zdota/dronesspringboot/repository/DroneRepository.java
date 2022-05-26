@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.Optional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Service
 @Repository
 public interface DroneRepository extends JpaRepository<Drone,Integer> {

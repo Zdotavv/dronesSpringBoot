@@ -19,6 +19,13 @@ spring:
 server:
   port: 8087 #set your port
 
-
-
+# Logger configuration
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    org.springframework: info
+#    org.keycloak: info
+    org.hibernate: info
+    com.zdota.drones: info
 
