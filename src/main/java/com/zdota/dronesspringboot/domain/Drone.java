@@ -10,8 +10,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
-
 @Entity
 @Table(name="drones")
 @AllArgsConstructor
@@ -23,6 +21,7 @@ public class Drone {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name="id",nullable = false)
+
     private Integer id;
     private String name;
     private String country;

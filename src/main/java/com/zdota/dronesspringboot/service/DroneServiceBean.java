@@ -30,15 +30,15 @@ public class DroneServiceBean implements DroneService {
 
     @Override
     public Drone viewById(Integer id) {
-        log.info("viewById() - start: id = {}", id);
+//        log.info("viewById() - start: id = {}", id);
         Drone drone = checkDrone(id);
-        log.debug("viewById()->checkDeleted() - start: id = {}", id);
+//        log.debug("viewById()->checkDeleted() - start: id = {}", id);
         checkDeleted(drone);
-        log.info("viewById() - end: drone = {}", id);
+//        log.info("viewById() - end: drone = {}", id);
         return checkDrone(id);
     }
            private void checkDeleted(Drone drone){
-               log.info("checkDeleted() - start: id = {}", drone.getId());
+//               log.info("checkDeleted() - start: id = {}", drone.getId());
             if (drone.getDeleted()==null || drone.getDeleted()) {
                 throw new EntityNotFoundException("Drone was deleted");
             }
