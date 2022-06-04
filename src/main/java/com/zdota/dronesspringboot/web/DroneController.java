@@ -4,23 +4,20 @@ import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.service.DroneService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+
 @RestController
-@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 public class DroneController {
 
     private final DroneService droneService;
@@ -43,13 +40,16 @@ public class DroneController {
 
     @GetMapping("/drones/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String viewDroneById(@PathVariable Integer id) {
-        try {
-            return droneService.viewById(id).toString();
-        } catch (EntityNotFoundException e) {
-            return e.getLocalizedMessage();
-        }
-//        return droneService.viewById(id);
+    public Drone viewDroneById(@PathVariable Integer id) {
+//        try {
+//            return droneService.viewById(id).toString();
+//        } catch (EntityNotFoundException e) {
+//            return e.getLocalizedMessage();
+//        }
+        log.debug("viewById() Controller - start: id = {}", id);
+        Drone drone=droneService.viewById(id);
+        log.debug("getById() Controller - end: name = {}", drone.getName());
+        return drone;
     }
 
     @PutMapping("/drones/{id}")
@@ -121,12 +121,6 @@ public class DroneController {
         LocalDateTime localDateTime = LocalDateTime.parse(ldc, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         droneService.updateDate(id, localDateTime);
     }
-    @GetMapping(value = "/drones/usa")
-    @ResponseStatus(HttpStatus.OK)
-    public Collection<Drone> findDroneByUsa() {
-        return droneService.findDroneByUsa();
-    }
-
     @PatchMapping("/drones/{id}/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeDrone(@PathVariable Integer id) {  // add message to client "Drone by ID deleted "

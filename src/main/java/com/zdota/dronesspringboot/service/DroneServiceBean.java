@@ -2,6 +2,9 @@ package com.zdota.dronesspringboot.service;
 
 import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.repository.DroneRepository;
+import com.zdota.dronesspringboot.util.ResourceNotExistException;
+import com.zdota.dronesspringboot.util.ResourceNotFoundException;
+import com.zdota.dronesspringboot.util.ResourceWasDeletedException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,22 +33,19 @@ public class DroneServiceBean implements DroneService {
 
     @Override
     public Drone viewById(Integer id) {
-//        log.info("viewById() - start: id = {}", id);
+        log.info("viewById() - start: id = {}", id);
         Drone drone = checkDrone(id);
-//        log.debug("viewById()->checkDeleted() - start: id = {}", id);
+        log.debug("viewById()->checkDeleted() - start: id = {}", id);
         checkDeleted(drone);
 //        log.info("viewById() - end: drone = {}", id);
         return checkDrone(id);
     }
-           private void checkDeleted(Drone drone){
-//               log.info("checkDeleted() - start: id = {}", drone.getId());
-            if (drone.getDeleted()==null || drone.getDeleted()) {
-                throw new EntityNotFoundException("Drone was deleted");
-            }
-    }
+
 
     private Drone checkDrone(Integer id) {
-        return droneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Drone not found with id = " + id));
+        return droneRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Drone not found with id = " + id));
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
@@ -68,11 +68,22 @@ public class DroneServiceBean implements DroneService {
 
     @Override
     public void removeById(Integer id) {
-        Drone drone =checkDrone(id);
+//        Drone drone =checkDrone(id);
+        Drone drone = droneRepository.findById(id)
+                .orElseThrow(ResourceNotExistException::new);
+        checkDeleted(drone);
        drone.setDeleted(Boolean.TRUE);
         droneRepository.save(drone);
     }
 
+
+    private void checkDeleted(Drone drone) {
+        log.info("checkDeleted() - start: id = {}", drone.getId());
+        if (drone.getDeleted() == null || drone.getDeleted()) {
+            throw new ResourceWasDeletedException();
+
+        }
+    }
     @Override
     public void removeAll() {
         droneRepository.deleteAll();
@@ -83,6 +94,7 @@ public class DroneServiceBean implements DroneService {
         log.info("findDroneByName() - start: name = {}", name);
         Collection<Drone> collection = droneRepository.findByName(name);
         log.info("findDroneByName() - end: collection = {}", collection);
+
         return collection;
     }
 
@@ -160,13 +172,6 @@ public class DroneServiceBean implements DroneService {
         log.info("updateDateTime() - end");
     }
 
-    @Override
-    public Collection<Drone> findDroneByUsa() {
-        log.info("findDroneByUSA() - start");
-        Collection<Drone> collection = droneRepository.findByUsa();
-        log.info("findDroneByUSA() - end: collection = {}", collection);
-        return collection;
-    }
     @Override
     public Collection<Drone> findAllByDeletedIsFalse() {
         log.info("findAllByDeletedIsFalse() - start");

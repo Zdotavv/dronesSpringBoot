@@ -1,13 +1,11 @@
 package com.zdota.dronesspringboot.service;
 
 import com.zdota.dronesspringboot.domain.Drone;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-
+@org.springframework.stereotype.Service
 
 public interface DroneService {
     Drone create(Drone drone);
@@ -30,6 +28,5 @@ public interface DroneService {
     Collection<Drone>findDroneByNoFighter();
     List<Drone> viewAllNeedUpgrade();
     void updateDate(Integer id, LocalDateTime dateTime);
-    Collection<Drone>findDroneByUsa();
     Collection<Drone>findAllByDeletedIsFalse();
 }
