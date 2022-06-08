@@ -43,9 +43,7 @@ public class DroneServiceBean implements DroneService {
 
 
     private Drone checkDrone(Integer id) {
-        return droneRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Drone not found with id = " + id));
-                .orElseThrow(ResourceNotFoundException::new);
+        return droneRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override

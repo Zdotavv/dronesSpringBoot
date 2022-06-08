@@ -3,13 +3,14 @@ package com.zdota.dronesspringboot;
 import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.repository.DroneRepository;
 import com.zdota.dronesspringboot.service.DroneServiceBean;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
+import com.zdota.dronesspringboot.util.ResourceNotFoundException;
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class DroneServiceTest {
     @Test
     public void whenSaveDrone_shouldReturnDrone() {
         Drone drone = new Drone();
+        drone.setId(1);
         drone.setName("Bayraktar");
 
         when(droneRepository.save(ArgumentMatchers.any(Drone.class))).thenReturn(drone);
@@ -55,7 +57,7 @@ public class DroneServiceTest {
     }
 
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test(expected = ResourceNotFoundException.class)
     public void should_throw_exception_when_drone_doesnt_exist() {
         Drone drone = new Drone();
         drone.setId(70);
