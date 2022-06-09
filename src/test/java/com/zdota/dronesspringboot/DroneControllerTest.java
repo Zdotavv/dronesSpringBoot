@@ -3,6 +3,7 @@ package com.zdota.dronesspringboot;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.web.DroneController;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -37,7 +38,7 @@ public class DroneControllerTest {
     @MockBean
     DroneController controller;
 
-
+    @Ignore
     @Test
     public void createDrone_success() throws Exception {
         Drone drone = Drone.builder()
