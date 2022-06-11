@@ -3,7 +3,7 @@ package com.zdota.dronesspringboot;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.dto.DroneDto;
-import com.zdota.dronesspringboot.util.config.DroneConverter;
+import com.zdota.dronesspringboot.util.config.DroneMapper;
 import com.zdota.dronesspringboot.web.DroneController;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DronesSpringBootApplication.class)
-//@WebMvcTest(DronesSpringBootApplication.class)
 @AutoConfigureMockMvc
 public class DroneControllerTest {
 
@@ -39,8 +38,8 @@ public class DroneControllerTest {
 
     @MockBean
     DroneController controller;
-    @Autowired
-    private DroneConverter converter;
+//    @Autowired
+//    private DroneConverter converter;
 
     @Ignore
     @Test
@@ -50,12 +49,11 @@ public class DroneControllerTest {
                 .isFighter(true)
                 .isDeleted(false)
                 .build();
-        DroneDto dto = converter.toDto(drone);
+        DroneDto dto = DroneMapper.INSTANCE.droneToDroneDto(drone);
         Mockito.when(controller.createDrone(dto)).thenReturn(dto);
 
             MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/drones")
                 .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
                 .content(mapper.writer().withDefaultPrettyPrinter().writeValueAsString(drone));
 
         mockMvc.perform(mockRequest)
@@ -72,7 +70,8 @@ public class DroneControllerTest {
                 .name("Bayraktar")
                 .country("Turkey")
                 .build();
-        DroneDto dto = converter.toDto(drone);
+//        DroneDto dto = converter.toDto(drone);
+        DroneDto dto = DroneMapper.INSTANCE.droneToDroneDto(drone);
         Mockito.when(controller.viewDroneById(drone.getId())).thenReturn(dto);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/drones/1")
@@ -92,7 +91,8 @@ public class DroneControllerTest {
                 .isFighter(true)
                 .isDeleted(false)
                 .build();
-        DroneDto dto = converter.toDto(drone);
+
+        DroneDto dto = DroneMapper.INSTANCE.droneToDroneDto(drone);
         Collection<Drone> records = new ArrayList<>(List.of(drone));
 
         controller.createDrone(dto);
@@ -104,7 +104,7 @@ public class DroneControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 //                .andExpect(jsonPath("$", hasSize(1)))
-//                .andExpect(jsonPath("$[1].Name", is("Bayraktar")));
+//                .andExpect(jsonPath("$[0].name", is("Bayraktar")));
     }
 
 }

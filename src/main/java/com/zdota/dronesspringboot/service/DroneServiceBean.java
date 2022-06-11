@@ -99,20 +99,20 @@ public class DroneServiceBean implements DroneService {
         return drone;
     }
 
-//    @Override
-//    public Collection<Drone> findDroneByFlightDuration(int flightDuration) {
-//        log.info("findDroneByFlightDuration() - start: flightDuration = {}", flightDuration);
-//        Collection<Drone> collection = droneRepository.findByFlightDuration(flightDuration);
-//        log.info("findDroneByFlightDuration() - end: collection = {}", collection);
-//        return collection;
-//    }
 
     @Override
     public Collection<Drone> findDroneByFighter() {
         log.info("findDroneByFighter() - start");
         var collection = droneRepository.findByFighter();
-        log.info("findDroneByFighter() - end: collection = {}", collection);
-        return collection;
+        Collection<Drone> returnList = new ArrayList<>();
+        for (Drone dr : collection) {
+            log.info("findPlaneByFighter() - check deleted for plane with id = {}", dr.getId());
+            if (dr.getDeleted() != null && !dr.getDeleted()) {
+                returnList.add(dr);
+            }
+        }
+        log.info("findPlaneByFighter() - end: collection = {}", collection);
+        return returnList;
     }
 
 

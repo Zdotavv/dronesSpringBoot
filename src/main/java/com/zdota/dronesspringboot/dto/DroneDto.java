@@ -26,6 +26,7 @@ public class DroneDto {
     public double maxHeight;
     private int maxSpeed;
 
+    @NotNull(message = "field isFighter must be filled")
     public boolean isFighter;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
