@@ -5,8 +5,7 @@ import com.zdota.dronesspringboot.dto.DroneDeleteDto;
 import com.zdota.dronesspringboot.dto.DroneDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-//import ma.glasnost.orika.CustomMapper;
-//import ma.glasnost.orika.MappingContext;
+
 
 //public class DroneMapper extends CustomMapper<Drone, DroneDto> {
     @Mapper

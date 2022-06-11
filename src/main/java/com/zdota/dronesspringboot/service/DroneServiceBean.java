@@ -71,14 +71,15 @@ public class DroneServiceBean implements DroneService {
     @Override
     public void removeById(Integer id) {
         log.info("removeById() - start: id = {}", id);
-//        Drone drone =checkDrone(id);
-        var drone = droneRepository.findById(id)
-                .orElseThrow(ResourceNotExistException::new);
+        var drone=checkDrone(id);
         log.info("removeById() -> checkDeleted() - start: id = {}", id);
         checkDeleted(drone);
         log.info("removeById() -> checkDeleted() - end: id = {}", id);
-       drone.setDeleted(Boolean.TRUE);
+        drone.setDeleted(Boolean.TRUE);
+//        var drone = droneRepository.findById(id)
+//                .orElseThrow(ResourceNotExistException::new);
         droneRepository.save(drone);
+        log.info("removeById() - end: id = {}", id);
     }
 
 
