@@ -6,6 +6,6 @@ public class DroneDeleteDto {
 //    @JsonIgnore
 //    public Integer id;
 
-    public String message = String.format("Drone with this id was deleted");
+    public String message = String.format("Drone with this id was deleted successfully");
 
 }
