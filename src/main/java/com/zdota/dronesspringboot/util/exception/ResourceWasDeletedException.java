@@ -1,10 +1,9 @@
-package com.zdota.dronesspringboot.util;
+package com.zdota.dronesspringboot.util.exception;
 
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class ResourceNotFoundException extends RuntimeException {
-
+public class ResourceWasDeletedException extends RuntimeException{
 }

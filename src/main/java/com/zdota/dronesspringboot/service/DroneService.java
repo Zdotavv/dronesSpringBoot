@@ -18,14 +18,12 @@ public interface DroneService {
 
     void removeById(Integer id);
 
-    void removeAll();
-
     boolean isFighter(Integer id);
 
-    Collection<Drone>findDroneByName(String name);
-    Collection<Drone>findDroneByFlightDuration(int flightDuration);
+    Drone findDroneByName(String name);
+
     Collection<Drone>findDroneByFighter();
-    Collection<Drone>findDroneByNoFighter();
+
     List<Drone> viewAllNeedUpgrade();
     void updateDate(Integer id, LocalDateTime dateTime);
     Collection<Drone>findAllByDeletedIsFalse();

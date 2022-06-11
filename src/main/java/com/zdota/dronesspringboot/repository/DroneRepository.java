@@ -16,13 +16,12 @@ import java.util.List;
 public interface DroneRepository extends JpaRepository<Drone,Integer> {
 
     @Query("select i from Drone i where i.isDeleted=false")
-    List<Drone> findByName(String name);
+    Drone findByName(String name);
     List<Drone> findByFlightDuration(int flightDuration);
 
     @Query("select p from Drone p where p.isFighter=true")
     List<Drone>findByFighter();
-    @Query("select p from Drone p where p.isFighter=false")
-    List<Drone>findByNoFighter();
+
     @Query("select i from Drone i where i.isDeleted=false")
     List<Drone>findAllByDeletedIsFalse();
     @Modifying

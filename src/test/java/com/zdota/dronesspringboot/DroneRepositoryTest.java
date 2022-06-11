@@ -45,8 +45,8 @@ public class DroneRepositoryTest {
     @Order(3)
     public void findByNameTest() {
 
-        List<Drone> droneList = droneRepository.findByName("Bayraktar");
-        Assertions.assertThat(droneList.size()).isGreaterThan(0);
+        Drone drone = droneRepository.findByName("Bayraktar");
+        Assertions.assertThat(drone.getName()).isEqualTo("Bayraktar");
     }
     @Test
     @Order(4)
@@ -71,12 +71,12 @@ public class DroneRepositoryTest {
         Assertions.assertThat(droneList.size()).isGreaterThan(0);
     }
 
-    @Test
-    @Order(7)
-    public void findByNoFighterTest() {
-        List<Drone> droneList = droneRepository.findByNoFighter();
-        Assertions.assertThat(droneList.size()).isGreaterThan(0);
-    }
+//    @Test
+//    @Order(7)
+//    public void findByNoFighterTest() {
+//        List<Drone> droneList = droneRepository.findByNoFighter();
+//        Assertions.assertThat(droneList.size()).isGreaterThan(0);
+//    }
     @Test
     @Order(8)
     public void findAllByDeletedIsFalseTest() {
@@ -107,15 +107,15 @@ public class DroneRepositoryTest {
         Drone drone = droneRepository.findById(1).get();
         droneRepository.delete(drone);
 
-        List<Drone> drone1 = null;
+        Drone drone1 = null;
 
-        Optional<List<Drone>> optionalAuthor = Optional.ofNullable(droneRepository.findByName("CH-5"));
+        Optional<Drone> optionalAuthor = Optional.ofNullable(droneRepository.findByName("CH-5"));
 
         if (optionalAuthor.isPresent()) {
             drone1 = optionalAuthor.get();
         }
 
-        Assertions.assertThat(drone1).isEmpty();
+        Assertions.assertThat(drone1).isNull();
     }
 
 

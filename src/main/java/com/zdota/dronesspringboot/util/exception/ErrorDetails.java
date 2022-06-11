@@ -1,4 +1,4 @@
-package com.zdota.dronesspringboot.util;
+package com.zdota.dronesspringboot.util.exception;
 
 import java.util.Date;
 

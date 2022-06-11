@@ -3,15 +3,14 @@ package com.zdota.dronesspringboot;
 import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.repository.DroneRepository;
 import com.zdota.dronesspringboot.service.DroneServiceBean;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import com.zdota.dronesspringboot.util.ResourceNotFoundException;
-import javax.persistence.EntityNotFoundException;
+import com.zdota.dronesspringboot.util.exception.ResourceNotFoundException;
+
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;

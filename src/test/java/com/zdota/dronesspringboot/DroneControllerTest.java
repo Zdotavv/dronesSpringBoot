@@ -2,6 +2,8 @@ package com.zdota.dronesspringboot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zdota.dronesspringboot.domain.Drone;
+import com.zdota.dronesspringboot.dto.DroneDto;
+import com.zdota.dronesspringboot.util.config.DroneConverter;
 import com.zdota.dronesspringboot.web.DroneController;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -37,6 +39,8 @@ public class DroneControllerTest {
 
     @MockBean
     DroneController controller;
+    @Autowired
+    private DroneConverter converter;
 
     @Ignore
     @Test
@@ -46,8 +50,8 @@ public class DroneControllerTest {
                 .isFighter(true)
                 .isDeleted(false)
                 .build();
-
-        Mockito.when(controller.createDrone(drone)).thenReturn(drone);
+        DroneDto dto = converter.toDto(drone);
+        Mockito.when(controller.createDrone(dto)).thenReturn(dto);
 
             MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/api/drones")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -68,8 +72,8 @@ public class DroneControllerTest {
                 .name("Bayraktar")
                 .country("Turkey")
                 .build();
-
-        Mockito.when(controller.viewDroneById(drone.getId())).thenReturn((drone));
+        DroneDto dto = converter.toDto(drone);
+        Mockito.when(controller.viewDroneById(drone.getId())).thenReturn(dto);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/drones/1")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -88,10 +92,10 @@ public class DroneControllerTest {
                 .isFighter(true)
                 .isDeleted(false)
                 .build();
-
+        DroneDto dto = converter.toDto(drone);
         Collection<Drone> records = new ArrayList<>(List.of(drone));
 
-        controller.createDrone(drone);
+        controller.createDrone(dto);
 
         Mockito.when(controller.findAllByDeletedIsFalse()).thenReturn(records);
 

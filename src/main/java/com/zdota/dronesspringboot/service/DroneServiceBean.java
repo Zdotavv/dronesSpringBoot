@@ -1,10 +1,11 @@
 package com.zdota.dronesspringboot.service;
 
 import com.zdota.dronesspringboot.domain.Drone;
+import com.zdota.dronesspringboot.dto.DroneDto;
 import com.zdota.dronesspringboot.repository.DroneRepository;
-import com.zdota.dronesspringboot.util.ResourceNotExistException;
-import com.zdota.dronesspringboot.util.ResourceNotFoundException;
-import com.zdota.dronesspringboot.util.ResourceWasDeletedException;
+import com.zdota.dronesspringboot.util.exception.ResourceNotExistException;
+import com.zdota.dronesspringboot.util.exception.ResourceNotFoundException;
+import com.zdota.dronesspringboot.util.exception.ResourceWasDeletedException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,10 @@ public class DroneServiceBean implements DroneService {
 
     @Override
     public Drone create(Drone drone) {
-        return droneRepository.save(drone);
+        log.info("create() - start: drone = {}", drone);
+        var saved=droneRepository.save(drone);
+        log.info("create() - end: id = {}", saved.getId());
+        return saved;
     }
 
 //    @Override
@@ -34,7 +38,7 @@ public class DroneServiceBean implements DroneService {
     @Override
     public Drone viewById(Integer id) {
         log.info("viewById() - start: id = {}", id);
-        Drone drone = checkDrone(id);
+        var drone = checkDrone(id);
         log.debug("viewById()->checkDeleted() - start: id = {}", id);
         checkDeleted(drone);
 //        log.info("viewById() - end: drone = {}", id);
@@ -66,10 +70,13 @@ public class DroneServiceBean implements DroneService {
 
     @Override
     public void removeById(Integer id) {
+        log.info("removeById() - start: id = {}", id);
 //        Drone drone =checkDrone(id);
-        Drone drone = droneRepository.findById(id)
+        var drone = droneRepository.findById(id)
                 .orElseThrow(ResourceNotExistException::new);
+        log.info("removeById() -> checkDeleted() - start: id = {}", id);
         checkDeleted(drone);
+        log.info("removeById() -> checkDeleted() - end: id = {}", id);
        drone.setDeleted(Boolean.TRUE);
         droneRepository.save(drone);
     }
@@ -82,43 +89,32 @@ public class DroneServiceBean implements DroneService {
 
         }
     }
-    @Override
-    public void removeAll() {
-        droneRepository.deleteAll();
-    }
 
     @Override
-    public Collection<Drone> findDroneByName(String name) {
+    public Drone findDroneByName(String name) {
         log.info("findDroneByName() - start: name = {}", name);
-        Collection<Drone> collection = droneRepository.findByName(name);
-        log.info("findDroneByName() - end: collection = {}", collection);
-
-        return collection;
+        var drone = droneRepository.findByName(name);
+        log.info("findDroneByName() - end: checkDeleted() = {}", drone.getId());
+        checkDeleted(drone);
+        return drone;
     }
 
-    @Override
-    public Collection<Drone> findDroneByFlightDuration(int flightDuration) {
-        log.info("findDroneByFlightDuration() - start: flightDuration = {}", flightDuration);
-        Collection<Drone> collection = droneRepository.findByFlightDuration(flightDuration);
-        log.info("findDroneByFlightDuration() - end: collection = {}", collection);
-        return collection;
-    }
+//    @Override
+//    public Collection<Drone> findDroneByFlightDuration(int flightDuration) {
+//        log.info("findDroneByFlightDuration() - start: flightDuration = {}", flightDuration);
+//        Collection<Drone> collection = droneRepository.findByFlightDuration(flightDuration);
+//        log.info("findDroneByFlightDuration() - end: collection = {}", collection);
+//        return collection;
+//    }
 
     @Override
     public Collection<Drone> findDroneByFighter() {
         log.info("findDroneByFighter() - start");
-        Collection<Drone> collection = droneRepository.findByFighter();
+        var collection = droneRepository.findByFighter();
         log.info("findDroneByFighter() - end: collection = {}", collection);
         return collection;
     }
 
-    @Override
-    public Collection<Drone> findDroneByNoFighter() {
-        log.info("findDroneByNoFighter() - start");
-        Collection<Drone> collection = droneRepository.findByNoFighter();
-        log.info("findDroneByNoFighter() - end: collection = {}", collection);
-        return collection;
-    }
 
     @Override
     public boolean isFighter(Integer id) {
