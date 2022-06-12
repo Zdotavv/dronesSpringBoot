@@ -19,6 +19,8 @@ public interface DroneRepository extends JpaRepository<Drone,Integer> {
     Drone findByName(String name);
     List<Drone> findByFlightDuration(int flightDuration);
 
+    @Query("select i from Drone i where i.isFighter=false and i.isDeleted=false")
+    Drone isFighter();
     @Query("select p from Drone p where p.isFighter=true")
     List<Drone>findByFighter();
 

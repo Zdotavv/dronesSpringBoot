@@ -41,7 +41,7 @@ public class DroneServiceBean implements DroneService {
         var drone = checkDrone(id);
         log.debug("viewById()->checkDeleted() - start: id = {}", id);
         checkDeleted(drone);
-//        log.info("viewById() - end: drone = {}", id);
+        log.info(">checkDeleted() - end: drone = {}", id);
         return checkDrone(id);
     }
 
@@ -109,15 +109,27 @@ public class DroneServiceBean implements DroneService {
 
     @Override
     public Collection<Drone> findDroneByFighter() {
+//        log.info("findDroneByFighter() - start");
+//        var collection = droneRepository.findByFighter();
+//        log.info("findDroneByFighter() - end: collection = {}", collection);
+//        return collection;
         log.info("findDroneByFighter() - start");
         var collection = droneRepository.findByFighter();
-        log.info("findDroneByFighter() - end: collection = {}", collection);
-        return collection;
+        Collection<Drone> returnList = new ArrayList<>();
+        for (Drone dr : collection) {
+            log.info("findDroneByFighter() - check deleted for plane with id = {}", dr.getId());
+            if (dr.getDeleted() != null && !dr.getDeleted()) {
+                returnList.add(dr);
+            }
+        }
+        log.info("findPlaneByFighter() - end: collection = {}", collection);
+        return returnList;
     }
 
 
     @Override
     public boolean isFighter(Integer id) {
+        checkDrone(id);
         return droneRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity Not Found with id: " + id)).isFighter();
 
     }

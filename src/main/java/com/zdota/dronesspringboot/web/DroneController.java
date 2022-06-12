@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-public class DroneController {
+public class DroneController implements DroneControllerSwagger {
 
     private final DroneService droneService;
     private final DroneConverter converter;
@@ -94,7 +94,7 @@ public class DroneController {
 
     @GetMapping(value = "/drones", params = {"name"})
     @ResponseStatus(HttpStatus.OK)
-        public DroneDto findDroneByName(String name) {
+    public DroneDto findDroneByName(String name) {
         log.debug("findDroneByName() Controller - start: name = {}", name);
         var dto =converter.toDto(droneService.findDroneByName(name));
         log.debug("findPlaneByName() Controller - end: id = {}", droneService.findDroneByName(name).getId());
@@ -110,18 +110,20 @@ public class DroneController {
 
     @PatchMapping(value = "/drones/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateDate(@RequestParam("dateTime")
+    public DroneDto updateDate(@RequestParam("dateTime")
                            @DateTimeFormat() String ldc,
                            @PathVariable Integer id) {
         var localDateTime = LocalDateTime.parse(ldc, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         droneService.updateDate(id, localDateTime);
+        return converter.toDto(droneService.viewById(id));
     }
     @PatchMapping("/drones/{id}/delete")
     @ResponseStatus(HttpStatus.OK)
-        public DroneDeleteDto removeDrone(@PathVariable Integer id) {
+    public DroneDeleteDto removeDrone(@PathVariable Integer id) {
         var droneToReturn=converter.toDeleteDto(droneService.viewById(id));
         droneService.removeById(id);
         return droneToReturn;
     }
 
 }
+

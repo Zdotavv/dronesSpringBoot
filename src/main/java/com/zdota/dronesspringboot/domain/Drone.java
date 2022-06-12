@@ -2,6 +2,7 @@ package com.zdota.dronesspringboot.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -21,21 +22,30 @@ public class Drone {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name="id",nullable = false)
-
+    @Schema(description = "id of drone", pattern = "sequence")
     private Integer id;
+    @Schema(description = "Name of drone.", example = "Bayraktar", required = true)
     private String name;
+    @Schema(description = "Name of country.", example = "Ukraine")
     private String country;
+    @Schema(description = "weigh of drone(kg).", example = "400.0")
     private double weight;
+    @Schema(description = "Maximum weight of bombs that can capacity the drone(kg).", example = "100.0")
     private double maxLoadCapacity;
+    @Schema(description = "Maximum duration of flight (min).", example = "60")
     private int flightDuration;
+    @Schema(description = "Maximum height of flight the drone(m).", example = "2500.0")
     private double maxHeight;
-
+    @Schema(description = "Maximum speed of drone(km/h)", example = "350")
     private int maxSpeed;
+    @Schema(description = "Flag which should be set if drone is fighter", allowableValues = {"true", "false"}, name = "Fighter")
     private boolean isFighter;
     @JsonIgnore
 //    @Column(name = "is_deleted")
 //    private boolean isDeleted = Boolean.FALSE;
+    @Schema(hidden = true)
     private Boolean isDeleted= Boolean.FALSE;
+    @Schema(description = "Date and time of plane creation", required = true, pattern = "yyyy-MM-dd HH:mm")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime produceDate;
 
