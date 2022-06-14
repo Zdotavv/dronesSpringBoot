@@ -55,7 +55,11 @@ public class DroneController implements DroneControllerSwagger {
         log.debug("getById() Controller - end: name = {}", drone.getName());
         return dto;
     }
-
+    @DeleteMapping("/drones")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeAllDrones() {
+        droneService.removeAll();
+    }
     @PutMapping("/drones/{id}")
     @ResponseStatus(HttpStatus.OK)
     public DroneDto updateDroneById(@PathVariable ("id")  Integer id, @RequestBody @Valid DroneDto droneForUpdate) {

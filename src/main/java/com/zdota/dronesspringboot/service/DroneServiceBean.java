@@ -89,6 +89,10 @@ public class DroneServiceBean implements DroneService {
 
         }
     }
+    @Override
+    public void removeAll() {
+        droneRepository.deleteAll();
+    }
 
     @Override
     public Drone findDroneByName(String name) {

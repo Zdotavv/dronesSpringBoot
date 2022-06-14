@@ -17,6 +17,7 @@ public interface DroneService {
     Drone updateById(Integer id, Drone bomb);
 
     void removeById(Integer id);
+    void removeAll();
 
     boolean isFighter(Integer id);
 

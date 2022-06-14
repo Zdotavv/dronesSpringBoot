@@ -42,7 +42,6 @@ public interface DroneControllerSwagger {
     })
     DroneDto viewDroneById(@PathVariable Integer id);
 
-
     @Operation(summary = "This is endpoint to update 1 existing drone by its id.", description = "Update request to change all fields of 1 drone by id", tags = {"Update drone"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK. Here is your updated drone."),

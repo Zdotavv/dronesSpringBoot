@@ -33,7 +33,8 @@ public class DroneDto {
     @Schema(description = "Maximum speed of drone(km/h)", example = "350")
     public int maxSpeed;
 
-    @Schema(description = "Flag which should be set if drone is fighter", allowableValues = {"true", "false"}, name = "isFighter")
+    @NotNull
+    @Schema(description = "Flag which should be true if drone is fighter", required = true)
     public boolean isFighter;
 
     @Schema(description = "Date and time of plane creation", required = true, pattern = "yyyy-MM-dd HH:mm")

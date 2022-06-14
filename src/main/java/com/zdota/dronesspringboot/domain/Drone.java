@@ -38,7 +38,7 @@ public class Drone {
     private double maxHeight;
     @Schema(description = "Maximum speed of drone(km/h)", example = "350")
     private int maxSpeed;
-    @Schema(description = "Flag which should be set if drone is fighter", allowableValues = {"true", "false"}, name = "Fighter")
+    @Schema(description = "Flag which should be set if drone is fighter", allowableValues = {"true", "false"}, name = "fighter")
     private boolean isFighter;
     @JsonIgnore
 //    @Column(name = "is_deleted")
