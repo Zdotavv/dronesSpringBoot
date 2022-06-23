@@ -43,4 +43,8 @@ public class DroneDto {
     @JsonIgnore
     @Schema(hidden = true)
     public Boolean isDeleted = Boolean.FALSE;
+
+    @Schema(hidden = true)
+    public OperatorDto mainOperator;
+
 }

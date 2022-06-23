@@ -3,10 +3,13 @@ package com.zdota.dronesspringboot.web;
 import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.dto.DroneDeleteDto;
 import com.zdota.dronesspringboot.dto.DroneDto;
+import com.zdota.dronesspringboot.dto.OperatorDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Collection;
 import java.util.List;
@@ -102,5 +105,22 @@ public interface DroneControllerSwagger {
             @ApiResponse(responseCode = "404", description = "Sorry, there are no Drones with such id in database")
     })
     DroneDeleteDto removeDrone(Integer id);
+
+
+    @Operation(summary = "This is endpoint to add main operator for drone", description = "Update request to add main operator of 1 drone in database by its id", tags = {"DroneDto", "OperatorDto"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK. Main operator was successfully added"),
+            @ApiResponse(responseCode = "404", description = "Sorry, there are no such drones in database")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    DroneDto addMainOperator(Integer id, OperatorDto mainOperator);
+
+    @Operation(summary = "This is endpoint to get operator by id of drone", description = "Get request to get information about operator by id of drone", tags = {"OperatortDto"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok. Here is your operator"),
+            @ApiResponse(responseCode = "404", description = "Sorry, there is no drone with such id")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    OperatorDto getOperatorByDroneId(Integer id);
 }
 

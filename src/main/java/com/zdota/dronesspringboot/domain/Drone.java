@@ -3,9 +3,7 @@ package com.zdota.dronesspringboot.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,7 +14,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
+@Getter
+@Setter
 public class Drone {
 
     @Id
@@ -49,78 +48,83 @@ public class Drone {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime produceDate;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    public double getMaxLoadCapacity() {
-        return maxLoadCapacity;
-    }
-
-    public void setMaxLoadCapacity(double maxLoadCapacity) {
-        this.maxLoadCapacity = maxLoadCapacity;
-    }
-
-    public int getFlightDuration() {
-        return flightDuration;
-    }
-
-    public void setFlightDuration(int flightDuration) {
-        this.flightDuration = flightDuration;
-    }
-
-    public double getMaxHeight() {
-        return maxHeight;
-    }
-
-    public void setMaxHeight(double maxHeight) {
-        this.maxHeight = maxHeight;
-    }
-
-    public int getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public void setMaxSpeed(int maxSpeed) {
-        this.maxSpeed = maxSpeed;
-    }
-
-    public boolean isFighter() {
-        return isFighter;
-    }
-
-    public void setFighter(boolean fighter) {
-        isFighter = fighter;
-    }
-    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Schema(hidden = true)
+    @JoinColumn(name = "operator_id", referencedColumnName = "id")
+    private Operator mainOperator;
+//
+//    public Integer getId() {
+//        return id;
+//    }
+//
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public String getCountry() {
+//        return country;
+//    }
+//
+//    public void setCountry(String country) {
+//        this.country = country;
+//    }
+//
+//    public double getWeight() {
+//        return weight;
+//    }
+//
+//    public void setWeight(double weight) {
+//        this.weight = weight;
+//    }
+//
+//    public double getMaxLoadCapacity() {
+//        return maxLoadCapacity;
+//    }
+//
+//    public void setMaxLoadCapacity(double maxLoadCapacity) {
+//        this.maxLoadCapacity = maxLoadCapacity;
+//    }
+//
+//    public int getFlightDuration() {
+//        return flightDuration;
+//    }
+//
+//    public void setFlightDuration(int flightDuration) {
+//        this.flightDuration = flightDuration;
+//    }
+//
+//    public double getMaxHeight() {
+//        return maxHeight;
+//    }
+//
+//    public void setMaxHeight(double maxHeight) {
+//        this.maxHeight = maxHeight;
+//    }
+//
+//    public int getMaxSpeed() {
+//        return maxSpeed;
+//    }
+//
+//    public void setMaxSpeed(int maxSpeed) {
+//        this.maxSpeed = maxSpeed;
+//    }
+//
+//    public boolean isFighter() {
+//        return isFighter;
+//    }
+//
+//    public void setFighter(boolean fighter) {
+//        isFighter = fighter;
+//    }
+//    @JsonIgnore
     public Boolean getDeleted() {
         return isDeleted;
     }
@@ -142,13 +146,26 @@ public class Drone {
         if (this == o) return true;
         if (!(o instanceof Drone)) return false;
         Drone drone = (Drone) o;
-        return Double.compare(drone.getWeight(), getWeight()) == 0 && Double.compare(drone.getMaxLoadCapacity(), getMaxLoadCapacity()) == 0 && getFlightDuration() == drone.getFlightDuration() && Double.compare(drone.getMaxHeight(), getMaxHeight()) == 0 && getMaxSpeed() == drone.getMaxSpeed() && isFighter() == drone.isFighter() && getId().equals(drone.getId()) && getName().equals(drone.getName()) && getCountry().equals(drone.getCountry()) && isDeleted.equals(drone.isDeleted) && getProduceDate().equals(drone.getProduceDate());
+        return Double.compare(drone.getWeight(), getWeight()) == 0 && Double.compare(drone.getMaxLoadCapacity(), getMaxLoadCapacity()) == 0 && getFlightDuration() == drone.getFlightDuration() && Double.compare(drone.getMaxHeight(), getMaxHeight()) == 0 && getMaxSpeed() == drone.getMaxSpeed() && isFighter() == drone.isFighter() && getId().equals(drone.getId()) && getName().equals(drone.getName()) && getCountry().equals(drone.getCountry()) && getIsDeleted().equals(drone.getIsDeleted()) && getProduceDate().equals(drone.getProduceDate()) && getMainOperator().equals(drone.getMainOperator());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getCountry(), getWeight(), getMaxLoadCapacity(), getFlightDuration(), getMaxHeight(), getMaxSpeed(), isFighter(), isDeleted, getProduceDate());
+        return Objects.hash(getId(), getName(), getCountry(), getWeight(), getMaxLoadCapacity(), getFlightDuration(), getMaxHeight(), getMaxSpeed(), isFighter(), getIsDeleted(), getProduceDate(), getMainOperator());
     }
+
+    //    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Drone)) return false;
+//        Drone drone = (Drone) o;
+//        return Double.compare(drone.getWeight(), getWeight()) == 0 && Double.compare(drone.getMaxLoadCapacity(), getMaxLoadCapacity()) == 0 && getFlightDuration() == drone.getFlightDuration() && Double.compare(drone.getMaxHeight(), getMaxHeight()) == 0 && getMaxSpeed() == drone.getMaxSpeed() && isFighter() == drone.isFighter() && getId().equals(drone.getId()) && getName().equals(drone.getName()) && getCountry().equals(drone.getCountry()) && isDeleted.equals(drone.isDeleted) && getProduceDate().equals(drone.getProduceDate());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(getId(), getName(), getCountry(), getWeight(), getMaxLoadCapacity(), getFlightDuration(), getMaxHeight(), getMaxSpeed(), isFighter(), isDeleted, getProduceDate());
+//    }
 
     @Override
     public String   toString() {

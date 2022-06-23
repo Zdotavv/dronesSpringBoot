@@ -1,8 +1,10 @@
 package com.zdota.dronesspringboot.service;
 
 import com.zdota.dronesspringboot.domain.Drone;
+import com.zdota.dronesspringboot.domain.Operator;
 import com.zdota.dronesspringboot.dto.DroneDto;
 import com.zdota.dronesspringboot.repository.DroneRepository;
+import com.zdota.dronesspringboot.repository.OperatorRepository;
 import com.zdota.dronesspringboot.util.exception.ResourceNotExistException;
 import com.zdota.dronesspringboot.util.exception.ResourceNotFoundException;
 import com.zdota.dronesspringboot.util.exception.ResourceWasDeletedException;
@@ -21,7 +23,7 @@ import java.util.List;
 public class DroneServiceBean implements DroneService {
 
     private final DroneRepository droneRepository;
-
+    private final OperatorRepository operatorRepository;
     @Override
     public Drone create(Drone drone) {
         log.info("create() - start: drone = {}", drone);
@@ -191,5 +193,21 @@ public class DroneServiceBean implements DroneService {
 
     }
 
+    @Override
+    public Operator getOperatorByDroneId(Integer id) {
+        log.info("getOperatorByDroneId() - start : id = {}", id);
+        var operator = operatorRepository.getOperatorByIdOfDrone(id);
+        log.info("getOperatorByDroneId() - end : operator = {}", operator);
+        return operator;
+    }
+
+    @Override
+    public Drone addMainOperator(Integer id, Operator operator) {
+        return droneRepository.findById(id)
+                .map(entity -> {
+                    entity.setMainOperator(operator);
+                    return droneRepository.save(entity);
+                }).orElseThrow(ResourceNotFoundException::new);
+    }
 }
 

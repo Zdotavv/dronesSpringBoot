@@ -1,6 +1,7 @@
 package com.zdota.dronesspringboot.service;
 
 import com.zdota.dronesspringboot.domain.Drone;
+import com.zdota.dronesspringboot.domain.Operator;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -28,4 +29,9 @@ public interface DroneService {
     List<Drone> viewAllNeedUpgrade();
     void updateDate(Integer id, LocalDateTime dateTime);
     Collection<Drone>findAllByDeletedIsFalse();
+
+    Operator getOperatorByDroneId(Integer id);
+
+    Drone addMainOperator(Integer id, Operator operator);
+
 }

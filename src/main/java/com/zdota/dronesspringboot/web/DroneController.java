@@ -3,8 +3,13 @@ package com.zdota.dronesspringboot.web;
 import com.zdota.dronesspringboot.domain.Drone;
 import com.zdota.dronesspringboot.dto.DroneDeleteDto;
 import com.zdota.dronesspringboot.dto.DroneDto;
+import com.zdota.dronesspringboot.dto.OperatorDto;
 import com.zdota.dronesspringboot.service.DroneService;
 import com.zdota.dronesspringboot.util.config.DroneConverter;
+import com.zdota.dronesspringboot.util.config.OperatorConverter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,14 +30,15 @@ import java.util.List;
 public class DroneController implements DroneControllerSwagger {
 
     private final DroneService droneService;
-    private final DroneConverter converter;
+    private final DroneConverter droneConverter;
+    private final OperatorConverter operatorConverter;
     @PostMapping("/drones")
     @ResponseStatus(value =HttpStatus.CREATED,reason = "Drone Created")
 //    public Drone createDrone(@RequestBody @Valid Drone drone) {
 //        return droneService.create(drone);
     public DroneDto createDrone(@RequestBody @Valid DroneDto droneForSave){
-        var drone = converter.getMapperFacade().map(droneForSave, Drone.class);
-        var dto = converter.toDto(droneService.create(drone));
+        var drone =droneConverter.getMapperFacade().map(droneForSave, Drone.class);
+        var dto = droneConverter.toDto(droneService.create(drone));
         return dto;
     }
 
@@ -51,7 +57,7 @@ public class DroneController implements DroneControllerSwagger {
         log.debug("viewById() Controller - start: id = {}", id);
         var drone=droneService.viewById(id);
         log.debug("viewById() Controller - to dto start: id = {}", id);
-        var dto = converter.toDto(drone);
+        var dto = droneConverter.toDto(drone);
         log.debug("getById() Controller - end: name = {}", drone.getName());
         return dto;
     }
@@ -64,9 +70,9 @@ public class DroneController implements DroneControllerSwagger {
     @ResponseStatus(HttpStatus.OK)
     public DroneDto updateDroneById(@PathVariable ("id")  Integer id, @RequestBody @Valid DroneDto droneForUpdate) {
         log.debug("updateDroneById() Controller - start: id = {}", id);
-        var drone = converter.getMapperFacade().map(droneForUpdate, Drone.class);
+        var drone = droneConverter.getMapperFacade().map(droneForUpdate, Drone.class);
         log.debug("updateDroneById() Controller - end: id = {}", id);
-        return converter.toDto(droneService.updateById(id, drone));
+        return droneConverter.toDto(droneService.updateById(id, drone));
     }
 
 
@@ -100,7 +106,7 @@ public class DroneController implements DroneControllerSwagger {
     @ResponseStatus(HttpStatus.OK)
     public DroneDto findDroneByName(String name) {
         log.debug("findDroneByName() Controller - start: name = {}", name);
-        var dto =converter.toDto(droneService.findDroneByName(name));
+        var dto =droneConverter.toDto(droneService.findDroneByName(name));
         log.debug("findPlaneByName() Controller - end: id = {}", droneService.findDroneByName(name).getId());
         return dto;
     }
@@ -118,15 +124,38 @@ public class DroneController implements DroneControllerSwagger {
                            @DateTimeFormat() String ldc,
                            @PathVariable Integer id) {
         var localDateTime = LocalDateTime.parse(ldc, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        log.debug("updateDate() Controller - finished parsing of datetime: datetime = {}", localDateTime);
         droneService.updateDate(id, localDateTime);
-        return converter.toDto(droneService.viewById(id));
+        return droneConverter.toDto(droneService.viewById(id));
     }
     @PatchMapping("/drones/{id}/delete")
     @ResponseStatus(HttpStatus.OK)
     public DroneDeleteDto removeDrone(@PathVariable Integer id) {
-        var droneToReturn=converter.toDeleteDto(droneService.viewById(id));
+        var droneToReturn=droneConverter.toDeleteDto(droneService.viewById(id));
         droneService.removeById(id);
         return droneToReturn;
+    }
+
+    @PutMapping(value = "/drones/{id}/operator")
+    @Override
+    public DroneDto addMainOperator(@PathVariable Integer id, @RequestBody OperatorDto mainOperator) {
+        log.debug("addMainOperator() Controller - start: id = {}, operator = {}", id, mainOperator);
+        var operator = operatorConverter.fromDto(mainOperator);
+        var drone = droneService.addMainOperator(id, operator);
+        var dto = droneConverter.toDto(drone);
+        log.debug("addMainOperator() Controller - end: id = {}, drone = {}", id, drone);
+        return dto;
+    }
+
+    @GetMapping(value = "/operators/{id}")
+    @Override
+    public OperatorDto getOperatorByDroneId(@PathVariable Integer id) {
+        log.debug("getOperatorByDroneId() Controller - start: id of drone = {}", id);
+        var operator = droneService.getOperatorByDroneId(id);
+        log.debug("getOperatorByDroneId() Controller - got operator = {}", operator);
+        var dto = operatorConverter.toDto(operator);
+        log.debug("getOperatorByDroneId() Controller - end : dto = {}", dto);
+        return dto;
     }
 
 }
