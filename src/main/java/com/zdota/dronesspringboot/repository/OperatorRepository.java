@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface OperatorRepository extends JpaRepository<Operator, Integer> {
 
-    @Query("SELECT o from Operator o inner join Drone dr on o.id = dr.mainOperator.id")
+    @Query("SELECT o from Operator o inner join Drone dr on o.id = dr.mainOperator.id where dr.id=:id")
      Operator getOperatorByIdOfDrone(Integer id);
+
 }
